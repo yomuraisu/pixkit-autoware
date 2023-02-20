@@ -1,0 +1,3 @@
+[submodule "pubsub/pubsub/python_can"]
+	path = pubsub/pubsub/python_can
+	url = https://github.com/nomokazu/python_can.git
