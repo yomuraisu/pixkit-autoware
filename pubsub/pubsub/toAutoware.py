@@ -11,6 +11,8 @@ bus = can.interface.Bus(bustype='socketcan', channel="slcan0", bitrate=500000, a
 # bus = can.Bus('ws://localhost:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
 
 
+# （たぶん）CAN message を受け取ったら いい感じに変換して ros2 topic を流す
+
 class Publisher_velo(Node):
     def __init__(self):
         super().__init__('pub_velo')
