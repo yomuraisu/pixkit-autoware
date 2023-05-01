@@ -14,6 +14,7 @@ bus = can.interface.Bus(bustype='socketcan', channel="slcan0", bitrate=500000, a
 class Publisher_velo(Node):
     def __init__(self):
         super().__init__('pub_velo')
+        # create_publish の第一引数はメッセージ型、第二引数はトピック名、第三引数はキューのサイズ
         self.publisher = self.create_publisher(
             VelocityReport, '/vehicle/status/velocity_status', 10
         )
