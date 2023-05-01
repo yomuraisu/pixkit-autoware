@@ -10,6 +10,11 @@ bus = can.interface.Bus(bustype='socketcan', channel="slcan0", bitrate=500000, a
 # bus = can.Bus('ws://116.80.92.6:54701/', bustype='remote', bitrate=500000)
 # bus = can.Bus('ws://localhost:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
 
+
+# autoware から topic を受け取ったら CAN に流す。
+# PIXKIT の CAN は、送る間隔がシビアなので 0.005s 毎に 3回送るのがちょうどよい（かった気がする） 
+
+
 class Subscriber(Node):
 
     def __init__(self):
