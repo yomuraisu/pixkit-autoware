@@ -15,6 +15,7 @@ class Publisher_mode(Node):
         self.publisher = self.create_publisher(
             ControlModeReport, '/vehicle/status/control_mode', 10
         )
+        # 0.05s 毎に topic が流れる（と思う）
         timer_period = 0.05
         self.timer = self.create_timer(timer_period, self.timer_callback)
         
