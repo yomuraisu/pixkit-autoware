@@ -5,6 +5,7 @@ from autoware_auto_control_msgs.msg import *
 from .python_can.msg import *
 import can
 import time
+import math
 
 bus = can.interface.Bus(bustype='socketcan', channel="slcan0", bitrate=500000, app_name='python-can')
 # bus = can.Bus('ws://116.80.92.6:54701/', bustype='remote', bitrate=500000)
@@ -26,32 +27,32 @@ class Subscriber(Node):
         # self.get_logger().info("Drive_ThrottlePedalTarget: %f" % (recv_topic.longitudinal.acceleration))
         # self.get_logger().info("Drive_SpeedTarget: %f" % (revc_topic.longitudinal.speed))
 
-        #--------------Steering_Command---------------------
-        message_s = Steering_Command()
+        # #--------------Steering_Command---------------------
+        # message_s = Steering_Command()
         
-        Steer_EnCtrl = 1
-        Steer_AngleSpeed = int(recv_topic.lateral.steering_tire_rotation_rate*100) + 200
-        Steer_AngleTarget = int(recv_topic.lateral.steering_tire_angle*1000) + 500
+        # Steer_EnCtrl = 1
+        # Steer_AngleSpeed = int(math.degrees(recv_topic.lateral.steering_tire_rotation_rate)*50+120)//1 # ITTAN
+        # Steer_AngleTarget = int(math.degrees(recv_topic.lateral.steering_tire_angle)/28.7*500+500)//1
 
-        message_s.setDataFromInt(Steer_EnCtrl, Steer_AngleSpeed, Steer_AngleTarget)
-        message_s.toData()
-        message_s.view()
-        can_msg_s = can.Message(arbitration_id = message_s.msg_id, data= message_s.data, is_extended_id = False)
-        for i in range(3):
-            bus.send(can_msg_s)
-            time.sleep(0.005)
+        # message_s.setDataFromInt(Steer_EnCtrl, Steer_AngleSpeed, Steer_AngleTarget)
+        # message_s.toData()
+        # message_s.view()
+        # can_msg_s = can.Message(arbitration_id = message_s.msg_id, data= message_s.data, is_extended_id = False)
+        # for i in range(3):
+        #     bus.send(can_msg_s)
+        #     time.sleep(0.005)
 
         if recv_topic.longitudinal.acceleration < 0:
             #--------------Brake_Command---------------------
             message_b = Brake_Command()
             
-            Brake_EnCtrl = 0
+            Brake_EnCtrl = 1
             Brake_Dec = 5 # tekito-
-            Brake_Pedal_Target = int(-recv_topic.longitudinal.acceleration*100/1.5)
+            Brake_Pedal_Target = int(-recv_topic.longitudinal.acceleration*100/1.5) # ITTAN
 
             message_b.setDataFromInt(Brake_EnCtrl, Brake_Dec, Brake_Pedal_Target)
             message_b.toData()
-            message_b.view()
+            # message_b.view()
             can_msg_b = can.Message(arbitration_id = message_b.msg_id, data= message_b.data, is_extended_id = False)
             for i in range(3):
                 bus.send(can_msg_b)
@@ -63,14 +64,14 @@ class Subscriber(Node):
             #--------------Throttle_Command---------------------
             message_t = Throttle_Command()
             
-            Drive_EnCtrl = 0
+            Drive_EnCtrl = 1
             Drive_Acc = 5 # tekito-
-            Drive_ThrottlePedalTarget = int(recv_topic.longitudinal.acceleration*100/1.5)
+            Drive_ThrottlePedalTarget = int(recv_topic.longitudinal.acceleration*500)
             Drive_SpeedTarget = int(recv_topic.longitudinal.speed)
 
             message_t.setDataFromInt(Drive_EnCtrl, Drive_Acc, Drive_ThrottlePedalTarget, Drive_SpeedTarget)
             message_t.toData()
-            message_t.view()
+            # message_t.view()
             can_msg_t = can.Message(arbitration_id = message_t.msg_id, data= message_t.data, is_extended_id = False)
             for i in range(3):
                 bus.send(can_msg_t)

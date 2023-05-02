@@ -68,7 +68,7 @@ def main(args=None):
                     print(recv_msg.data)
                     steering_can.setDataFromCANMessage(recv_msg.data)
                     print(steering_can.Steer_AngleActual)
-                    steering = (steering_can.Steer_AngleActual - 500)/100 # canデータをautowareの車両のスケールに合わせる
+                    steering = (steering_can.Steer_AngleActual - 500)/1000 # canデータをautowareの車両のスケールに合わせる
                     # rclpy.spin_once(mypub_velo)
                     # mypub_velo.callback_velo(steering, velocity)
                     # rclpy.spin_once(mypub_st)
@@ -92,7 +92,7 @@ def main(args=None):
                     print(recv_msg.data)
                     speed_can.setDataFromCANMessage(recv_msg.data)
                     print(speed_can.WheelSpeedFL)
-                    velocity = speed_can.WheelSpeedFL*3.6 # km/h
+                    velocity = speed_can.WheelSpeedFL*3.6 /3510 # km/h
                     mypub_velo.callback_velo(steering, velocity)
                     
 
