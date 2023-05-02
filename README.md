@@ -10,9 +10,8 @@ ros2 pkg create --build-type ament_python pubsub
 this branch is in `pixcon_ws/src/ ` 
 
 
-`sudo apt install can-utils`
-
 ```
+sudo apt install can-utils
 pip3 install python-can
 pip3 install python-can-remote
 pip3 install pygame
