@@ -21,26 +21,26 @@ class Subscriber(Node):
         )
 
     def listener_callback(self, recv_topic):
-        # self.get_logger().info("Steer_AngleSpeed: %f" % (recv_topic.lateral.steering_tire_rotation_rate))
-        # self.get_logger().info("Steer_AngleTarget: %f" % (recv_topic.lateral.steering_tire_angle))
-        # self.get_logger().info("Brake_Pedal_Target: %f" % (revc_topic.longitudinal.acceleration))
-        # self.get_logger().info("Drive_ThrottlePedalTarget: %f" % (recv_topic.longitudinal.acceleration))
-        # self.get_logger().info("Drive_SpeedTarget: %f" % (revc_topic.longitudinal.speed))
+        self.get_logger().info("Steer_AngleSpeed: %f" % (recv_topic.lateral.steering_tire_rotation_rate))
+        self.get_logger().info("Steer_AngleTarget: %f" % (recv_topic.lateral.steering_tire_angle))
+        self.get_logger().info("Brake_Pedal_Target: %f" % (revc_topic.longitudinal.acceleration))
+        self.get_logger().info("Drive_ThrottlePedalTarget: %f" % (recv_topic.longitudinal.acceleration))
+        self.get_logger().info("Drive_SpeedTarget: %f" % (revc_topic.longitudinal.speed))
 
-        # #--------------Steering_Command---------------------
-        # message_s = Steering_Command()
+        #--------------Steering_Command---------------------
+        message_s = Steering_Command()
         
-        # Steer_EnCtrl = 1
-        # Steer_AngleSpeed = int(math.degrees(recv_topic.lateral.steering_tire_rotation_rate)*50+120)//1 # ITTAN
-        # Steer_AngleTarget = int(math.degrees(recv_topic.lateral.steering_tire_angle)/28.7*500+500)//1
+        Steer_EnCtrl = 1
+        Steer_AngleSpeed = int(math.degrees(recv_topic.lateral.steering_tire_rotation_rate)*50+120)//1 # ITTAN
+        Steer_AngleTarget = int(math.degrees(recv_topic.lateral.steering_tire_angle)/28.7*500+500)//1
 
-        # message_s.setDataFromInt(Steer_EnCtrl, Steer_AngleSpeed, Steer_AngleTarget)
-        # message_s.toData()
-        # message_s.view()
-        # can_msg_s = can.Message(arbitration_id = message_s.msg_id, data= message_s.data, is_extended_id = False)
-        # for i in range(3):
-        #     bus.send(can_msg_s)
-        #     time.sleep(0.005)
+        message_s.setDataFromInt(Steer_EnCtrl, Steer_AngleSpeed, Steer_AngleTarget)
+        message_s.toData()
+        message_s.view()
+        can_msg_s = can.Message(arbitration_id = message_s.msg_id, data= message_s.data, is_extended_id = False)
+        for i in range(3):
+            bus.send(can_msg_s)
+            time.sleep(0.005)
 
         if recv_topic.longitudinal.acceleration < 0:
             #--------------Brake_Command---------------------
